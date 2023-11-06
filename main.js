@@ -3,29 +3,27 @@ function Showdata() {
     let idCode="ET"
     let idNum=202300
 
-    let expencelist
-    if (localStorage.getItem('expencelist') == null) {
-        expencelist = []
-    }
-    else {
-        expencelist = JSON.parse(localStorage.getItem('expencelist'))
-    }
-    //adding data to the table
-    let html = ""
-    expencelist.forEach(function (element, index) {
+    axios.get('https://crudcrud.com/api/67363f0027e24d088b3766f57891321c/ApiExpencetracker')
+    .then((response)=>{
+        // console.log(response.data)
+        let html=''
+        response.data.forEach((element,index) => {
+        console.log(`${element.Expence}`)
         html += "<tr>"
         html += `<td>${idCode}${++idNum}</td>`
-        html += "<td>" + element.Expence + "</td>"
-        html += "<td>" + element.Cateagory + "</td>"
-        html += "<td>" + element.Desc + "</td>"
+        html += `<td>${element.Expence}</td>`
+        html += `<td>${element.Cateagory}</td>`
+        html += `<td>${element.Desc}</td>`
         html += '<td><button onclick="EditExpence('+index+')" class="btn btn-warning"> Edit </button></td>'
         html +='<td><button onclick="DeleteExpence('+index+')" class="btn btn-danger"> X </button></td>'
         html += "</tr>"
-    });
-    document.querySelector('#crudTable tbody').innerHTML = html
+        });
+        document.querySelector('#crudTable tbody').innerHTML = html
+    })
+    .catch(err=>console.log(err))
 }
 // load date when refresh
-// document.onload = Showdata()
+document.onload = Showdata()
 
 
 function AddExpence() {
@@ -41,9 +39,8 @@ function AddExpence() {
             Desc
         }
       axios.post('https://crudcrud.com/api/67363f0027e24d088b3766f57891321c/ApiExpencetracker',obj)
-      .then((response)=>{
-        // Showdata(response.data)
-        console.log(data)
+      .then(()=>{
+        document.onload=Showdata()
     })
       .catch(err=>console.log(err))
 
