@@ -3,10 +3,11 @@ function Showdata() {
     let idCode="ET"
     let idNum=202300
 
-    axios.get('https://crudcrud.com/api/67363f0027e24d088b3766f57891321c/ApiExpencetracker')
+    axios.get('https://crudcrud.com/api/299e03d80a7644918ab109ee57abc43f/ApiExpencetracker')
     .then((response)=>{
         // console.log(response.data)
         let html=''
+        let id=''
         response.data.forEach((element,index) => {
         console.log(`${element.Expence}`)
         html += "<tr>"
@@ -14,8 +15,9 @@ function Showdata() {
         html += `<td>${element.Expence}</td>`
         html += `<td>${element.Cateagory}</td>`
         html += `<td>${element.Desc}</td>`
-        html += '<td><button onclick="EditExpence('+index+')" class="btn btn-warning"> Edit </button></td>'
-        html +='<td><button onclick="DeleteExpence('+index+')" class="btn btn-danger"> X </button></td>'
+        // console.log(`${element._id}`)
+        html += `<td><button onclick="EditExpence('${element._id}')" class="btn btn-warning"> Edit </button></td>`
+        html +=`<td><button onclick=DeleteExpence('${element._id}') class="btn btn-danger"> X </button></td>`
         html += "</tr>"
         });
         document.querySelector('#crudTable tbody').innerHTML = html
@@ -38,7 +40,7 @@ function AddExpence() {
             Cateagory,
             Desc
         }
-      axios.post('https://crudcrud.com/api/67363f0027e24d088b3766f57891321c/ApiExpencetracker',obj)
+      axios.post('https://crudcrud.com/api/299e03d80a7644918ab109ee57abc43f/ApiExpencetracker',obj)
       .then(()=>{
         document.onload=Showdata()
     })
@@ -84,20 +86,13 @@ function EditExpence(index){
 
 
 
-function DeleteExpence(index) {
-    let expencelist
-
-    if (localStorage.getItem('expencelist') == null) {
-        expencelist = []
-    }
-    else {
-        expencelist = JSON.parse(localStorage.getItem('expencelist'))
-    }
-    expencelist.splice(index,1)
-    // splice me phla index kaha se del karna hai dete h,dusra kaha tak,
-    // to mene bola index jaha point krha h array me usse one value (yani ki wo index khud hi) del krdo,
-    // agar me 1 ki jagh 2 deta to uss index ko or uske aage ki ek index ko ye del kardeta
-    localStorage.setItem('expencelist', JSON.stringify(expencelist))
-    Showdata()
+function DeleteExpence(id) {
+    // console.log(id)
+    axios.delete(`https://crudcrud.com/api/299e03d80a7644918ab109ee57abc43f/ApiExpencetracker/${id}`)
+    .then(()=>{
+        console.log('deleted succesfully')
+        document.onload=Showdata()
+    })
+    .catch(err=>console.log(err))
 }
 
