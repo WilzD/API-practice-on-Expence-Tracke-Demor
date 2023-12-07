@@ -1,10 +1,9 @@
 
-
+const token=localStorage.getItem('token') 
 async function Showdata() {
     try {
-
-        const response = await axios.get('http://localhost:3000/expences')
-        //generate some id
+        const response = await axios.get(`http://localhost:3000/expences`,{headers:{'Authorization':token}})//passing token so that specific user's data will be shown
+        //generate some id                                                                                 // passing in headers so that it will not seen in url
         let idCode = "ET"
         let idNum = 202300
         let html = ''
@@ -41,7 +40,7 @@ function AddExpence() {
                 Cateagory,
                 Desc
             }
-            await axios.post('http://localhost:3000/add-expence', obj)
+            await axios.post('http://localhost:3000/add-expence',obj,{headers:{'Authorization':token}})
             document.querySelector('#Price').value = ""
             document.querySelector('#desc').value = ""
             Showdata()
@@ -58,13 +57,13 @@ async function EditExpence(id) {
         //add bitton will hide and update button display
         document.getElementById('UpdateBtn').style.display = 'block'
         document.getElementById('AddBtn').style.display = 'none'
-        const response = await axios.get(`http://localhost:3000/edit-expence/${id}`)
+        const response = await axios.get(`http://localhost:3000/edit-expence/${id}`,{headers:{'Authorization':token}})
         console.log(response)
         document.querySelector('#Price').value = response.data.price
         document.querySelector('select').value = response.data.category
         document.querySelector('#desc').value = response.data.description
     } catch (error) {
-        console.log(err)
+        console.log(error)
     }
     try {
         //here we are using put method because patch method is showing error , and our web is working very fine with put method
@@ -73,7 +72,7 @@ async function EditExpence(id) {
                 Expence: document.querySelector('#Price').value,
                 Cateagory: document.querySelector('select').value,
                 Desc: document.querySelector('#desc').value
-            })
+            },{headers:{'Authorization':token}})
             Showdata()
             //add bitton will hide and update button display
             document.querySelector('#Price').value = ''
@@ -92,7 +91,7 @@ async function EditExpence(id) {
 
 async function DeleteExpence(id) {
     try {
-        await axios.delete(`http://localhost:3000/delete/${id}`)
+        await axios.delete(`http://localhost:3000/delete/${id}`,{headers:{'Authorization':token}})
         Showdata()
     } catch (error) {
         console.log(error)
@@ -143,8 +142,8 @@ async function loginUser() {
             password: password
         }
         let data = await axios.post('http://localhost:3000/user-login', obj)
-
-        console.log(data.data.message)
+        //************storing token to local storage*/
+        localStorage.setItem('token',data.data.token)
         let msg = document.getElementById('msg')
         msg.innerHTML = `<h2>${data.data.message}</h2>`
         setTimeout(() => {
