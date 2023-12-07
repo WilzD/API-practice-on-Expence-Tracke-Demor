@@ -15,12 +15,15 @@
             </div>
           <div id="details" class="details">
             <label for="">Name</label>
-            <input type="text" id="name" class="form-control">
+            <input type="text" id="name" class="form-control" required>
             <label for="">Email</label>
-            <input type="email" id="email" class="form-control">
+            <input type="email" id="email" class="form-control" required>
             <label for="">Password</label>
-            <input type="password" id="password" class="form-control">
-            <button id="AddBtn" type="submit" class="mt-4">Login</button>
+            <input type="password" id="password" class="form-control" required>
+            <button id="loginBtn" type="submit" class="mt-4" onclick="loginUser()">Login</button>
+            <div id="msg" style="color: red;">
+                <!-- for error msg -->
+            </div>
           </div>
         </div>
         <br>
@@ -30,4 +33,6 @@
     </div>
     
 </body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.0/axios.min.js"></script>
+<script src="main.js"></script>
 </html>

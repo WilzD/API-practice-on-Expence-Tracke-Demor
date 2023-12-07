@@ -17,17 +17,12 @@ label{
     font-size: 20px;
 }
 
-#AddBtn{
+button{
     border: solid 2px black;
     background: #5cea39;
     width: 100%;
 }
-#UpdateBtn{
-    border: solid 2px black;
-    background: #5cea39;
-    width: 100%;
-    display: none;
-}
+
 button:active{
     background:radial-gradient(#0dd4ce, transparent);
     box-shadow: 0 4px 8px 0 rgba(16, 149, 232, 0.2), 0 6px 20px 0 rgb(20, 233, 244);
